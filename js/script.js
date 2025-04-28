@@ -1,6 +1,142 @@
-// Custom JavaScript for Gamplin Támara
+// Custom JavaScript for Glamping Café Ginebra
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    // --- AOS Initialization (already in HTML, keep for potential future use) ---
+    // AOS.init({
+    //     duration: 1000,
+    //     once: true
+    // });
+
+    // --- Navbar Shrink Effect (Optional) ---
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled'); // Add a class for styling scrolled state if needed
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+    }
+
+    // --- Smooth Scroll for Anchor Links (Optional) ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if(targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // --- Chatbot FAQ Logic ---
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotBody = document.getElementById('chatbot-body');
+    const chatbotInput = document.getElementById('chatbot-user-input');
+    const chatbotSend = document.getElementById('chatbot-send');
+
+    // Preguntas y respuestas frecuentes (simplificado)
+    const faq = {
+        "reservar": "Puedes reservar contactándonos directamente por WhatsApp o llenando el formulario de contacto en nuestra página.",
+        "ubicacion": "Estamos ubicados en Támara, Casanare. La dirección exacta se proporciona al confirmar la reserva.",
+        "precio": "Nuestras tarifas varían según la temporada y el tipo de glamping. Por favor, contáctanos para obtener una cotización.",
+        "servicios": "Ofrecemos alojamiento en glamping, experiencias de café, senderismo y un ambiente tranquilo para desconectar.",
+        "mascotas": "Actualmente no permitimos mascotas para garantizar la tranquilidad de todos los huéspedes.",
+        "cancelar": "Nuestra política de cancelación permite cambios con anticipación. Contacta con nosotros para más detalles.",
+        "horario": "El check-in es a partir de las 3 PM y el check-out es a las 12 PM.",
+        "comida": "Ofrecemos opciones de desayuno y cena bajo pedido. También hay restaurantes cercanos en Támara.",
+        "default": "No entendí tu pregunta. ¿Puedes reformularla? También puedes preguntarme sobre: reservar, ubicación, precio, servicios, mascotas, cancelar, horario, comida."
+    };
+
+    function addChatMessage(message, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('chatbot-message', sender);
+        messageDiv.textContent = message;
+        chatbotBody.appendChild(messageDiv);
+        // Scroll automático al último mensaje
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+    }
+
+    function getBotResponse(userInput) {
+        const lowerInput = userInput.toLowerCase();
+        for (const keyword in faq) {
+            if (lowerInput.includes(keyword)) {
+                return faq[keyword];
+            }
+        }
+        return faq.default;
+    }
+
+    function handleUserInput() {
+        const userInput = chatbotInput.value.trim();
+        if (userInput === '') return;
+
+        addChatMessage(userInput, 'user');
+        chatbotInput.value = '';
+
+        // Simular respuesta del bot
+        setTimeout(() => {
+            const botResponse = getBotResponse(userInput);
+            addChatMessage(botResponse, 'bot');
+        }, 500); // Pequeña demora para simular pensamiento
+    }
+
+    if (chatbotToggle && chatbotWindow && chatbotClose && chatbotBody && chatbotInput && chatbotSend) {
+        chatbotToggle.addEventListener('click', () => {
+            const isVisible = chatbotWindow.style.display === 'block';
+            chatbotWindow.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) {
+                 // Opcional: Añadir mensaje de bienvenida si no hay mensajes
+                 if (chatbotBody.children.length <= 1) { // Solo el mensaje inicial
+                    // addChatMessage("Hola 👋 ¿En qué puedo ayudarte?", 'bot');
+                 }
+            }
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbotWindow.style.display = 'none';
+        });
+
+        chatbotSend.addEventListener('click', handleUserInput);
+
+        chatbotInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                handleUserInput();
+            }
+        });
+    } else {
+        console.warn('Elementos del chatbot no encontrados. El chatbot no funcionará.');
+    }
+
+    // Lógica para mostrar/ocultar botón flotante de WhatsApp al hacer scroll
+    const whatsappFloatButton = document.getElementById('whatsapp-float-button');
+    if (whatsappFloatButton) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 200) { // Muestra el botón después de hacer scroll 200px
+                whatsappFloatButton.style.display = 'block';
+                whatsappFloatButton.style.opacity = '1';
+            } else {
+                whatsappFloatButton.style.opacity = '0';
+                // Espera a que termine la transición de opacidad para ocultarlo
+                setTimeout(() => {
+                    if (window.scrollY <= 200) { // Doble chequeo por si el usuario subió rápido
+                         whatsappFloatButton.style.display = 'none';
+                    }
+                }, 300); // Debe coincidir con la duración de la transición en CSS
+            }
+        });
+    }
+
+    // Puedes añadir más lógica JS aquí si es necesario
+    // Por ejemplo, inicialización de carruseles, validaciones extra, etc.
+
+});
+
     // Smooth scroll for navigation links
     document.querySelectorAll('nav a[href^="#"], footer a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -128,4 +264,4 @@ document.addEventListener('DOMContentLoaded', function() {
         new bootstrap.Tooltip(floatButton); // Inicializa el tooltip si no lo estaba
     }
 
-});
+;

@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alquiler Gamplin Támara - Wilson Leal</title>
+    <title>Glamping Café Ginebra - Támara</title>
+    <meta name="description" content="Descubre Glamping Café Ginebra en Támara, Casanare. El lugar especial para desconectarte con el amor de tu vida. Reserva tu experiencia única.">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <!-- Favicon (Optional) -->
     <!-- <link rel="icon" href="images/favicon.ico"> -->
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
 
     <!-- Navbar Fija -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Gamplin Támara</a>
+            <a class="navbar-brand" href="index.html">Glamping Café Ginebra</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -43,11 +48,12 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero-section d-flex align-items-center text-center text-white" style="min-height: calc(100vh - 56px - 150px);"> <!-- Ajusta 150px si la altura del footer cambia -->
+    <section id="hero" class="hero-section d-flex align-items-center justify-content-center text-center text-white">
         <div class="container">
-            <h1 class="display-3 fw-bold anime-target">Bienvenido a Gamplin Támara</h1>
-            <p class="lead fs-4 mb-4 anime-target">Tu mejor opción para una estadía única en Támara, Casanare.</p>
-            <a href="contact.html" class="btn btn-primary btn-lg anime-target">Reserva Ahora</a>
+            <h1 class="display-3 fw-bold" data-aos="fade-up">Bienvenido a Glamping Café Ginebra</h1>
+            <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">El lugar especial para desconectarte con el amor de tu vida ❤️</p>
+            <a href="services.html" class="btn btn-primary btn-lg" data-aos="fade-up" data-aos-delay="400">Nuestros Servicios</a>
+            <a href="contact.html" class="btn btn-outline-light btn-lg ms-2" data-aos="fade-up" data-aos-delay="500">Reserva Ahora</a>
         </div>
     </section>
 
@@ -69,17 +75,44 @@
         </div>
     </footer>
 
-    <!-- Bootstrap Bundle with Popper -->
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- anime.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- Custom JS -->
     <script src="js/script.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000, // Duración de la animación
+            once: true // La animación solo ocurre una vez
+        });
+    </script>
 
-    <!-- Botón Flotante WhatsApp (Reemplaza NUMERO con el número real) -->
-    <a href="https://wa.me/NUMERO?text=Hola%2C%20estoy%20interesado%20en%20el%20Gamplin%20T%C3%A1mara." target="_blank" id="whatsapp-float-button" class="whatsapp-float btn btn-success btn-lg rounded-circle shadow" title="Contactar por WhatsApp">
+    <!-- Chatbot FAQ -->
+    <div class="chatbot-container" id="chatbot-container">
+        <button id="chatbot-toggle" class="btn btn-info rounded-circle shadow" title="Preguntas Frecuentes">
+            <i class="bi bi-question-circle-fill"></i>
+        </button>
+        <div class="chatbot-window shadow rounded" id="chatbot-window" style="display: none;">
+            <div class="chatbot-header bg-info text-white p-2 rounded-top d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 ms-2">Preguntas Frecuentes</h6>
+                <button id="chatbot-close" class="btn-close btn-close-white" aria-label="Cerrar"></button>
+            </div>
+            <div class="chatbot-body p-3" id="chatbot-body">
+                <!-- Los mensajes del chat se añadirán aquí -->
+                <div class="chatbot-message bot">Hola 👋 ¿Cómo puedo ayudarte hoy?</div>
+            </div>
+            <div class="chatbot-input p-2 border-top">
+                <div class="input-group">
+                    <input type="text" id="chatbot-user-input" class="form-control form-control-sm" placeholder="Escribe tu pregunta...">
+                    <button id="chatbot-send" class="btn btn-info btn-sm">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/3228082810?text=Hola%2C%20estoy%20interesado%20en%20el%20Glamping%20Caf%C3%A9%20Ginebra." target="_blank" id="whatsapp-float-button" class="whatsapp-float btn btn-success btn-lg rounded-circle shadow" title="Contactar por WhatsApp">
         <i class="bi bi-whatsapp"></i>
     </a>
 

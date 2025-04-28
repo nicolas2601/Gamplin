@@ -7,6 +7,9 @@
     --light-bg: #F5F5DC; /* Beige */
     --text-dark: #333;
     --text-light: #f8f9fa;
+    --whatsapp-green: #25D366;
+    --whatsapp-hover: #1DAE51;
+    --info-blue: #0dcaf0; /* Bootstrap info color for chatbot */
 }
 
 body {
@@ -16,6 +19,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #fff; /* Default white background */
 }
 
 h1, h2, h3, h4, h5, h6, .navbar-brand {
@@ -23,6 +27,7 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
     font-weight: 700;
 }
 
+/* Navbar */
 .navbar {
     background-color: rgba(255, 255, 255, 0.95) !important; /* Slightly transparent white */
 }
@@ -34,18 +39,22 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
 .nav-link {
     color: var(--primary-color) !important;
     font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-link.active,
 .nav-link:hover {
     color: var(--secondary-color) !important;
+    transform: translateY(-2px);
 }
 
+/* Hero Section */
 .hero-section {
-    background: url('../images/gamplin1.jpg') no-repeat center center/cover;
+    background: url('../images/gamplin.jpg') no-repeat center center/cover;
     min-height: 80vh; /* Adjust height as needed */
     position: relative;
     color: var(--text-light);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .hero-section::before {
@@ -126,14 +135,14 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
     border-color: var(--secondary-color);
 }
 
-#contact .btn-success, #whatsapp-float-button {
-    background-color: #25D366; /* WhatsApp Green */
-    border-color: #25D366;
+#contact .btn-success {
+    background-color: var(--whatsapp-green);
+    border-color: var(--whatsapp-green);
 }
 
-#contact .btn-success:hover, #whatsapp-float-button:hover {
-    background-color: #1DAE51;
-    border-color: #1DAE51;
+#contact .btn-success:hover {
+    background-color: var(--whatsapp-hover);
+    border-color: var(--whatsapp-hover);
 }
 
 footer {
@@ -150,6 +159,17 @@ footer a:hover {
     text-decoration: underline;
 }
 
+/* Botón Flotante WhatsApp */
+#whatsapp-float-button {
+    background-color: var(--whatsapp-green);
+    border-color: var(--whatsapp-green);
+}
+
+#whatsapp-float-button:hover {
+    background-color: var(--whatsapp-hover);
+    border-color: var(--whatsapp-hover);
+}
+
 .whatsapp-float {
     position: fixed;
     bottom: 20px;
@@ -161,6 +181,90 @@ footer a:hover {
     align-items: center;
     justify-content: center;
     font-size: 1.8rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+}
+
+/* Chatbot Styles */
+.chatbot-container {
+    position: fixed;
+    bottom: 90px; /* Position above WhatsApp button */
+    right: 20px;
+    z-index: 1031; /* Above WhatsApp */
+}
+
+.chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+    background-color: var(--info-blue);
+    border-color: var(--info-blue);
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    background-color: #0a9cb5; /* Darker info blue */
+    border-color: #0a9cb5;
+}
+
+.chatbot-window {
+    position: absolute;
+    bottom: 70px; /* Position above the toggle button */
+    right: 0;
+    width: 300px;
+    max-height: 400px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    display: none; /* Initially hidden */
+}
+
+.chatbot-window .card-header {
+    background-color: var(--info-blue);
+    color: white;
+}
+
+.chatbot-window .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 330px; /* Fixed height for body */
+}
+
+.chatbot-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f8f9fa; /* Light background for messages */
+    border-radius: 0.25rem;
+}
+
+.chatbot-message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 80%;
+}
+
+.chatbot-message.user {
+    background-color: var(--secondary-color);
+    color: var(--text-dark);
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.chatbot-message.bot {
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+.chatbot-window .input-group {
+    margin-top: auto; /* Push input to bottom */
 }
 
 /* Responsive Adjustments */
@@ -174,9 +278,57 @@ footer a:hover {
     body {
         padding-top: 56px; /* Ensure padding matches navbar height */
     }
+    .chatbot-window {
+        width: 90vw;
+        max-width: 300px;
+        right: 5vw;
+        left: 5vw;
+        margin: 0 auto;
+    }
+    .chatbot-container {
+        right: 10px;
+        bottom: 85px;
+    }
+    .whatsapp-float {
+        right: 10px;
+        bottom: 15px;
+    }
 }
 
-/* Animation Placeholders (to be implemented in JS) */
-.anime-target, .anime-scroll-target {
-    opacity: 0; /* Start hidden for JS animation */
+/* AOS Animation Placeholders */
+[data-aos] {
+    opacity: 0;
+    transition-property: transform, opacity;
+}
+
+/* Floating WhatsApp Button */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 15px; /* Adjusted based on media query */
+    right: 15px; /* Adjusted based on media query */
+    background-color: var(--whatsapp-green);
+    color: var(--text-light);
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    z-index: 100;
+    display: none; /* Initially hidden, shown by JS */
+    opacity: 0; /* Initially transparent, faded in by JS */
+    transition: opacity 0.3s ease-in-out, background-color 0.3s ease;
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.whatsapp-float:hover {
+    background-color: var(--whatsapp-hover);
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.whatsapp-float i {
+    line-height: 1; /* Adjust icon alignment if needed */
 }

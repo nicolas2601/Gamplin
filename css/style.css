@@ -1,86 +1,104 @@
-/* Custom Styles for Gamplin Támara */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap');
-
-:root {
-    --primary-color: #556B2F; /* Dark Olive Green */
-    --secondary-color: #8FBC8F; /* Dark Sea Green */
-    --light-bg: #F5F5DC; /* Beige */
-    --text-dark: #333;
-    --text-light: #f8f9fa;
-    --whatsapp-green: #25D366;
-    --whatsapp-hover: #1DAE51;
-    --info-blue: #0dcaf0; /* Bootstrap info color for chatbot */
-}
-
+/* Estilos Generales y Tema Naturaleza */
 body {
-    font-family: 'Roboto', sans-serif;
-    color: var(--text-dark);
-    padding-top: 56px; /* Adjust for fixed navbar */
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #fff; /* Default white background */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #fdfaf6; /* Fondo cálido, casi blanco */
+    color: #4f4f4f; /* Color de texto principal oscuro */
+    padding-top: 70px; /* Ajuste para la navbar fija */
 }
 
-h1, h2, h3, h4, h5, h6, .navbar-brand {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-}
-
-/* Navbar */
-.navbar {
-    background-color: rgba(255, 255, 255, 0.95) !important; /* Slightly transparent white */
-}
-
-.navbar-brand {
-    color: var(--primary-color) !important;
-}
-
-.nav-link {
-    color: var(--primary-color) !important;
-    font-weight: 500;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.nav-link.active,
-.nav-link:hover {
-    color: var(--secondary-color) !important;
-    transform: translateY(-2px);
-}
-
-/* Hero Section */
 .hero-section {
-    background: url('../images/gamplin.jpg') no-repeat center center/cover;
-    min-height: 80vh; /* Adjust height as needed */
-    position: relative;
-    color: var(--text-light);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    background-position: center 30% !important;
 }
 
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
-    z-index: 1;
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #5d4037; /* Marrón oscuro para títulos */
 }
 
-.hero-section .container {
-    position: relative;
-    z-index: 2;
+a {
+    color: #8d6e63; /* Marrón medio para enlaces */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #5d4037; /* Marrón oscuro al pasar el mouse */
+    text-decoration: underline;
+}
+
+.btn-primary {
+    background-color: #a1887f; /* Marrón claro para botón primario */
+    border-color: #a1887f;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #8d6e63; /* Marrón medio al pasar el mouse */
+    border-color: #8d6e63;
+}
+
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    color: #fff;
 }
 
 .section-padding {
     padding: 80px 0;
 }
 
-#about {
-    background-color: var(--light-bg);
+.bg-light-alt {
+    background-color: #efebe9; /* Beige muy claro alternativo */
 }
 
+.shadow-sm { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important; }
+.shadow { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+.rounded { border-radius: .375rem!important; }
+
+/* Navbar */
+.navbar {
+    transition: background-color 0.5s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #fff;
+}
+
+.bg-dark-transparent {
+    background-color: rgba(40, 40, 40, 0.7); /* Fondo oscuro semi-transparente inicial */
+}
+
+.navbar-scrolled {
+    background-color: #5d4037; /* Marrón oscuro sólido al hacer scroll */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/hero-background.jpg') no-repeat center center;
+    /* Reemplaza '../images/hero-background.jpg' con tu imagen de fondo */
+    background-size: cover;
+    color: #fff;
+}
+
+/* About Section */
+#about img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Services Section */
 .service-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
@@ -88,247 +106,233 @@ h1, h2, h3, h4, h5, h6, .navbar-brand {
 
 .service-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 1rem 2rem rgba(93, 64, 55, 0.15) !important; /* Sombra marrón suave */
 }
 
-.service-card .btn-outline-primary {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
-.service-card .btn-outline-primary:hover {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-#reviews {
-    background-color: var(--light-bg);
-}
-
-.review-card {
-    background-color: #fff;
-    border: none;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    padding: 1rem;
-}
-
-.carousel-indicators [data-bs-target] {
-    background-color: var(--primary-color);
-}
-
-.map-responsive iframe {
-    border-radius: 0.25rem; /* Match Bootstrap's default */
-}
-
-#contact .btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-#contact .btn-primary:hover {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-}
-
-#contact .btn-success {
-    background-color: var(--whatsapp-green);
-    border-color: var(--whatsapp-green);
-}
-
-#contact .btn-success:hover {
-    background-color: var(--whatsapp-hover);
-    border-color: var(--whatsapp-hover);
-}
-
-footer {
-    background-color: var(--text-dark);
-    color: var(--text-light);
-    margin-top: auto; /* Pushes footer to bottom */
-}
-
-footer a {
-    text-decoration: none;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-
-/* Botón Flotante WhatsApp */
-#whatsapp-float-button {
-    background-color: var(--whatsapp-green);
-    border-color: var(--whatsapp-green);
-}
-
-#whatsapp-float-button:hover {
-    background-color: var(--whatsapp-hover);
-    border-color: var(--whatsapp-hover);
-}
-
-.whatsapp-float {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1030; /* Above most elements */
+.icon-circle {
     width: 60px;
     height: 60px;
+    background-color: rgba(161, 136, 127, 0.1); /* Fondo marrón muy claro */
+    color: #8d6e63; /* Icono marrón medio */
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
-    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.whatsapp-float:hover {
-    transform: scale(1.1);
+/* Reviews Section */
+.review-card {
+    background-color: #fff;
+    border: 1px solid #eee;
 }
 
-/* Chatbot Styles */
-.chatbot-container {
-    position: fixed;
-    bottom: 90px; /* Position above WhatsApp button */
-    right: 20px;
-    z-index: 1031; /* Above WhatsApp */
+.text-warning {
+    color: #ffab00 !important; /* Amarillo para estrellas */
 }
 
-.chatbot-toggle {
-    width: 60px;
-    height: 60px;
-    font-size: 1.8rem;
-    background-color: var(--info-blue);
-    border-color: var(--info-blue);
-    color: white;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.chatbot-toggle:hover {
-    transform: scale(1.1);
-    background-color: #0a9cb5; /* Darker info blue */
-    border-color: #0a9cb5;
-}
-
-.chatbot-window {
-    position: absolute;
-    bottom: 70px; /* Position above the toggle button */
-    right: 0;
-    width: 300px;
-    max-height: 400px;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    display: none; /* Initially hidden */
-}
-
-.chatbot-window .card-header {
-    background-color: var(--info-blue);
-    color: white;
-}
-
-.chatbot-window .card-body {
+/* Contact Section */
+.icon-circle-small {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(161, 136, 127, 0.1);
+    color: #8d6e63;
+    border-radius: 50%;
     display: flex;
-    flex-direction: column;
-    height: 330px; /* Fixed height for body */
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Evita que el círculo se encoja */
 }
 
-.chatbot-messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 10px;
-    background-color: #f8f9fa; /* Light background for messages */
-    border-radius: 0.25rem;
+.map-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%; /* Proporción 16:9 */
+    position: relative;
+    height: 0;
 }
 
-.chatbot-message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 15px;
-    max-width: 80%;
+.map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
 }
 
-.chatbot-message.user {
-    background-color: var(--secondary-color);
-    color: var(--text-dark);
-    margin-left: auto;
-    border-bottom-right-radius: 5px;
+#form-status .alert {
+    margin-bottom: 0;
 }
 
-.chatbot-message.bot {
-    background-color: var(--light-bg);
-    color: var(--text-dark);
-    margin-right: auto;
-    border-bottom-left-radius: 5px;
+/* Footer */
+footer {
+    background-color: #4e342e; /* Marrón más oscuro para el footer */
 }
 
-.chatbot-window .input-group {
-    margin-top: auto; /* Push input to bottom */
+.social-icons a {
+    transition: color 0.3s ease;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .hero-section {
-        min-height: 60vh;
-    }
-    .section-padding {
-        padding: 60px 0;
-    }
-    body {
-        padding-top: 56px; /* Ensure padding matches navbar height */
-    }
-    .chatbot-window {
-        width: 90vw;
-        max-width: 300px;
-        right: 5vw;
-        left: 5vw;
-        margin: 0 auto;
-    }
-    .chatbot-container {
-        right: 10px;
-        bottom: 85px;
-    }
-    .whatsapp-float {
-        right: 10px;
-        bottom: 15px;
-    }
+.social-icons a:hover {
+    color: #c5a69a !important; /* Color más claro al pasar el mouse */
+    text-decoration: none;
 }
 
-/* AOS Animation Placeholders */
-[data-aos] {
-    opacity: 0;
-    transition-property: transform, opacity;
-}
-
-/* Floating WhatsApp Button */
+/* Botón Flotante WhatsApp */
 .whatsapp-float {
     position: fixed;
     width: 60px;
     height: 60px;
-    bottom: 15px; /* Adjusted based on media query */
-    right: 15px; /* Adjusted based on media query */
-    background-color: var(--whatsapp-green);
-    color: var(--text-light);
+    bottom: 25px;
+    right: 25px;
+    background-color: #25d366;
+    color: #FFF;
     border-radius: 50px;
     text-align: center;
     font-size: 30px;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
     z-index: 100;
-    display: none; /* Initially hidden, shown by JS */
-    opacity: 0; /* Initially transparent, faded in by JS */
-    transition: opacity 0.3s ease-in-out, background-color 0.3s ease;
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
 }
 
 .whatsapp-float:hover {
-    background-color: var(--whatsapp-hover);
-    color: var(--text-light);
-    text-decoration: none;
+    transform: scale(1.1);
+    color: #fff;
 }
 
-.whatsapp-float i {
-    line-height: 1; /* Adjust icon alignment if needed */
+/* Chatbot FAQ */
+.chatbot-container {
+    position: fixed;
+    bottom: 100px; /* Posición encima del botón de WhatsApp */
+    right: 25px;
+    z-index: 1050;
+}
+
+.chatbot-toggle-button {
+    width: 55px;
+    height: 55px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #17a2b8; /* Color info de Bootstrap */
+    border-color: #17a2b8;
+}
+
+.chatbot-toggle-button:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+.chatbot-window {
+    width: 320px;
+    max-height: 450px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    bottom: 70px; /* Espacio sobre el botón */
+    right: 0;
+}
+
+.chatbot-header {
+    background-color: #17a2b8;
+    color: white;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+
+.chatbot-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    max-height: 300px;
+    scrollbar-width: thin;
+    scrollbar-color: #17a2b8 #f8f9fa;
+}
+
+.chatbot-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chatbot-body::-webkit-scrollbar-track {
+    background: #f8f9fa;
+}
+
+.chatbot-body::-webkit-scrollbar-thumb {
+    background-color: #17a2b8;
+    border-radius: 20px;
+}
+
+.chatbot-message {
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.chatbot-message.bot {
+    background-color: #e9ecef;
+    color: #495057;
+    border-bottom-left-radius: 0;
+    align-self: flex-start;
+}
+
+.chatbot-message.user {
+    background-color: #17a2b8;
+    color: white;
+    border-bottom-right-radius: 0;
+    margin-left: auto; /* Alinea a la derecha */
+}
+
+.chatbot-input {
+    border-top: 1px solid #ddd;
+    padding: 0.5rem;
+    background-color: #fff;
+}
+
+.chatbot-input .form-control {
+    height: calc(1.5em + .5rem + 2px); /* Ajuste altura input sm */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+    .section-padding {
+        padding: 60px 0;
+    }
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    .navbar-nav {
+        background-color: #5d4037; /* Fondo sólido en móvil */
+        padding: 1rem;
+        border-radius: 0 0 .25rem .25rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    .hero-section .lead {
+        font-size: 1rem;
+    }
+    .section-padding {
+        padding: 50px 0;
+    }
+    .chatbot-window {
+        width: calc(100vw - 40px);
+        max-width: 300px;
+        right: -10px; /* Ajuste para centrar un poco */
+    }
+}
+
+/* AOS Animations */
+[data-aos] {
+    /* Puedes añadir estilos base para elementos antes de animar si es necesario */
 }

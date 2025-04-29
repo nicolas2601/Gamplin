@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deja tu Reseña - Gamplin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-transparent fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Gamplin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="reseña.html">Deja tu Reseña</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section py-5">
+        <div class="container py-5">
+            <div class="row py-5">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold text-white">Deja tu Reseña</h1>
+                    <p class="lead text-white mb-4">Tu opinión nos ayuda a mejorar</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulario de Reseña -->
+    <section class="section-padding bg-light-alt">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow rounded p-4">
+                        <h2 class="mb-4">Comparte tu experiencia</h2>
+                        <form id="review-form">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Valoración</label>
+                                <div class="rating">
+                                    <span class="star" data-value="1">★</span>
+                                    <span class="star" data-value="2">★</span>
+                                    <span class="star" data-value="3">★</span>
+                                    <span class="star" data-value="4">★</span>
+                                    <span class="star" data-value="5">★</span>
+                                </div>
+                                <input type="hidden" id="rating" value="0">
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Comentario</label>
+                                <textarea class="form-control" id="comment" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar Reseña</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 text-white text-center">
+        <div class="container">
+            <p class="mb-0">© 2023 Gamplin. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Estrellas de valoración
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                document.getElementById('rating').value = value;
+                document.querySelectorAll('.star').forEach((s, i) => {
+                    s.style.color = i < value ? '#ffab00' : '#ddd';
+                });
+            });
+        });
+
+        // Manejo del formulario
+        document.getElementById('review-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const review = {
+                name: document.getElementById('name').value,
+                rating: parseInt(document.getElementById('rating').value),
+                comment: document.getElementById('comment').value,
+                date: new Date().toLocaleDateString()
+            };
+            
+            // Guardar en localStorage
+            let reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            reviews.push(review);
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+            
+            alert('¡Gracias por tu reseña!');
+            this.reset();
+            document.querySelectorAll('.star').forEach(star => {
+                star.style.color = '#ddd';
+            });
+            document.getElementById('rating').value = '0';
+        });
+    </script>
+</body>
+</html>

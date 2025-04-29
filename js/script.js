@@ -1,38 +1,82 @@
-// Custom JavaScript for Glamping Café Ginebra
-
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- AOS Initialization (already in HTML, keep for potential future use) ---
-    // AOS.init({
-    //     duration: 1000,
-    //     once: true
-    // });
+    // Inicializar AOS (Animate On Scroll)
+    AOS.init({
+        duration: 800, // Duración de la animación
+        once: true // La animación ocurre solo una vez
+    });
 
-    // --- Navbar Shrink Effect (Optional) ---
+    // --- Navbar Scroll Effect ---
     const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('navbar-scrolled'); // Add a class for styling scrolled state if needed
-            } else {
-                navbar.classList.remove('navbar-scrolled');
-            }
-        });
-    }
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
+            navbar.classList.remove('bg-dark-transparent'); // Asegura que la clase transparente se quite
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+            navbar.classList.add('bg-dark-transparent'); // Vuelve a añadir la transparencia si está arriba
+        }
+    });
 
-    // --- Smooth Scroll for Anchor Links (Optional) ---
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
+    // --- Smooth Scrolling for Navbar Links ---
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if(targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+            // Solo previene el default y hace scroll si es un enlace interno (#)
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navbarHeight = navbar.offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Cierra el menú de navegación en móviles después de hacer clic
+                    const navbarCollapse = document.querySelector('.navbar-collapse');
+                    if (navbarCollapse.classList.contains('show')) {
+                        const toggler = document.querySelector('.navbar-toggler');
+                        toggler.click(); // Simula un clic en el toggler para cerrar
+                    }
+
+                    // Actualiza la clase 'active' (opcional, Bootstrap puede manejarlo con scrollspy)
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                }
             }
         });
     });
 
-    // --- Chatbot FAQ Logic ---
+    // --- EmailJS Contact Form Handling ---
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            formStatus.innerHTML = '<div class="alert alert-info">Enviando...</div>';
+
+            // Configuración de EmailJS - Obtén estos IDs desde https://dashboard.emailjs.com/admin
+            const serviceID = 'service_olry6gl'; // Reemplazar con tu Service ID válido
+            const templateID = 'service_olry6gl'; // Reemplazar con tu Template ID válido
+
+            emailjs.sendForm(serviceID, templateID, this)
+                .then(() => {
+                    formStatus.innerHTML = '<div class="alert alert-success">¡Mensaje enviado con éxito! Gracias por contactarnos.</div>';
+                    contactForm.reset(); // Limpia el formulario
+                }, (err) => {
+                    formStatus.innerHTML = `<div class="alert alert-danger">Error al enviar el mensaje: ${JSON.stringify(err)}</div>`;
+                    console.error('Error de EmailJS:', err);
+                });
+        });
+    }
+
+    // --- Chatbot FAQ Functionality ---
     const chatbotToggle = document.getElementById('chatbot-toggle');
     const chatbotWindow = document.getElementById('chatbot-window');
     const chatbotClose = document.getElementById('chatbot-close');
@@ -40,228 +84,204 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatbotInput = document.getElementById('chatbot-user-input');
     const chatbotSend = document.getElementById('chatbot-send');
 
-    // Preguntas y respuestas frecuentes (simplificado)
+    // Base de conocimientos simple para el chatbot
     const faq = {
-        "reservar": "Puedes reservar contactándonos directamente por WhatsApp o llenando el formulario de contacto en nuestra página.",
-        "ubicacion": "Estamos ubicados en Támara, Casanare. La dirección exacta se proporciona al confirmar la reserva.",
-        "precio": "Nuestras tarifas varían según la temporada y el tipo de glamping. Por favor, contáctanos para obtener una cotización.",
-        "servicios": "Ofrecemos alojamiento en glamping, experiencias de café, senderismo y un ambiente tranquilo para desconectar.",
-        "mascotas": "Actualmente no permitimos mascotas para garantizar la tranquilidad de todos los huéspedes.",
-        "cancelar": "Nuestra política de cancelación permite cambios con anticipación. Contacta con nosotros para más detalles.",
-        "horario": "El check-in es a partir de las 3 PM y el check-out es a las 12 PM.",
-        "comida": "Ofrecemos opciones de desayuno y cena bajo pedido. También hay restaurantes cercanos en Támara.",
-        "default": "No entendí tu pregunta. ¿Puedes reformularla? También puedes preguntarme sobre: reservar, ubicación, precio, servicios, mascotas, cancelar, horario, comida."
+        "hola": "¡Hola! ¿En qué puedo ayudarte sobre Glamping Café Ginebra?",
+        "precio": "El precio por noche varía según la temporada y disponibilidad. Por favor, contáctanos directamente para una cotización precisa.",
+        "ubicacion": "Estamos ubicados en la Vereda El Banco, Támara, Casanare. Puedes ver el mapa en la sección de Contacto.",
+        "servicios": "Ofrecemos alojamiento en domo geodésico de lujo, café de origen, opciones de almuerzo típico (con reserva) y actividades al aire libre como senderismo.",
+        "reservar": "Puedes enviarnos un mensaje a través del formulario de contacto o contactarnos directamente por WhatsApp para hacer tu reserva.",
+        "mascotas": "Actualmente no permitimos mascotas para garantizar la tranquilidad de todos nuestros huéspedes. ¡Gracias por tu comprensión!",
+        "jacuzzi": "Sí, nuestro domo cuenta con jacuzzi privado para que te relajes.",
+        "cafe": "¡Claro! Servimos delicioso café de origen de Támara. Puedes disfrutarlo durante tu estadía.",
+        "gracias": "¡De nada! Si tienes más preguntas, no dudes en consultar."
+        // Añade más preguntas y respuestas
     };
 
     function addChatMessage(message, sender) {
         const messageDiv = document.createElement('div');
-        messageDiv.classList.add('chatbot-message', sender);
+        messageDiv.classList.add('chatbot-message', sender); // sender puede ser 'user' o 'bot'
         messageDiv.textContent = message;
         chatbotBody.appendChild(messageDiv);
         // Scroll automático al último mensaje
         chatbotBody.scrollTop = chatbotBody.scrollHeight;
     }
 
-    function getBotResponse(userInput) {
-        const lowerInput = userInput.toLowerCase();
+    function getBotResponse(userMessage) {
+        const lowerCaseMessage = userMessage.toLowerCase().trim();
+        let bestMatch = "Lo siento, no entendí tu pregunta. ¿Puedes reformularla? También puedes contactarnos directamente por WhatsApp.";
+        let highestScore = 0;
+
+        // Busca la mejor coincidencia basada en palabras clave
         for (const keyword in faq) {
-            if (lowerInput.includes(keyword)) {
-                return faq[keyword];
+            const keywords = keyword.split(' ');
+            let currentScore = 0;
+            keywords.forEach(kw => {
+                if (lowerCaseMessage.includes(kw)) {
+                    currentScore++;
+                }
+            });
+
+            // Simple ponderación: si la pregunta del usuario es exactamente la palabra clave, puntaje alto
+            if (lowerCaseMessage === keyword) {
+                currentScore += keywords.length * 2; // Bonus por coincidencia exacta
+            }
+
+            if (currentScore > highestScore) {
+                highestScore = currentScore;
+                bestMatch = faq[keyword];
             }
         }
-        return faq.default;
+
+        // Si no hay una coincidencia razonable, usa la respuesta por defecto
+        if (highestScore < 1 && lowerCaseMessage.length > 3) { // Evita responder a mensajes muy cortos sin coincidencia
+             bestMatch = "No estoy seguro de cómo responder a eso. Para información detallada, por favor contáctanos por WhatsApp o usa el formulario.";
+        }
+
+        return bestMatch;
     }
 
-    function handleUserInput() {
-        const userInput = chatbotInput.value.trim();
-        if (userInput === '') return;
-
-        addChatMessage(userInput, 'user');
-        chatbotInput.value = '';
-
-        // Simular respuesta del bot
-        setTimeout(() => {
-            const botResponse = getBotResponse(userInput);
-            addChatMessage(botResponse, 'bot');
-        }, 500); // Pequeña demora para simular pensamiento
-    }
-
-    if (chatbotToggle && chatbotWindow && chatbotClose && chatbotBody && chatbotInput && chatbotSend) {
+    if (chatbotToggle && chatbotWindow && chatbotClose && chatbotSend && chatbotInput) {
         chatbotToggle.addEventListener('click', () => {
-            const isVisible = chatbotWindow.style.display === 'block';
-            chatbotWindow.style.display = isVisible ? 'none' : 'block';
-            if (!isVisible) {
-                 // Opcional: Añadir mensaje de bienvenida si no hay mensajes
-                 if (chatbotBody.children.length <= 1) { // Solo el mensaje inicial
-                    // addChatMessage("Hola 👋 ¿En qué puedo ayudarte?", 'bot');
-                 }
-            }
+            const isDisplayed = chatbotWindow.style.display === 'block';
+            chatbotWindow.style.display = isDisplayed ? 'none' : 'block';
         });
 
         chatbotClose.addEventListener('click', () => {
             chatbotWindow.style.display = 'none';
         });
 
-        chatbotSend.addEventListener('click', handleUserInput);
+        chatbotSend.addEventListener('click', () => {
+            const userMessage = chatbotInput.value.trim();
+            if (userMessage) {
+                addChatMessage(userMessage, 'user');
+                chatbotInput.value = ''; // Limpia el input
 
-        chatbotInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                handleUserInput();
-            }
-        });
-    } else {
-        console.warn('Elementos del chatbot no encontrados. El chatbot no funcionará.');
-    }
-
-    // Lógica para mostrar/ocultar botón flotante de WhatsApp al hacer scroll
-    const whatsappFloatButton = document.getElementById('whatsapp-float-button');
-    if (whatsappFloatButton) {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 200) { // Muestra el botón después de hacer scroll 200px
-                whatsappFloatButton.style.display = 'block';
-                whatsappFloatButton.style.opacity = '1';
-            } else {
-                whatsappFloatButton.style.opacity = '0';
-                // Espera a que termine la transición de opacidad para ocultarlo
+                // Simula una pequeña demora antes de la respuesta del bot
                 setTimeout(() => {
-                    if (window.scrollY <= 200) { // Doble chequeo por si el usuario subió rápido
-                         whatsappFloatButton.style.display = 'none';
-                    }
-                }, 300); // Debe coincidir con la duración de la transición en CSS
+                    const botResponse = getBotResponse(userMessage);
+                    addChatMessage(botResponse, 'bot');
+                }, 500);
+            }
+        });
+
+        // Permite enviar con la tecla Enter
+        chatbotInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                chatbotSend.click();
             }
         });
     }
 
-    // Puedes añadir más lógica JS aquí si es necesario
-    // Por ejemplo, inicialización de carruseles, validaciones extra, etc.
+    // --- WhatsApp Button Visibility ---
+    const whatsappButton = document.getElementById('whatsapp-float-button');
+    if (whatsappButton) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // Muestra el botón después de hacer scroll 300px
+                whatsappButton.style.opacity = '1';
+                whatsappButton.style.visibility = 'visible';
+            } else {
+                whatsappButton.style.opacity = '0';
+                whatsappButton.style.visibility = 'hidden';
+            }
+        });
+        // Estado inicial (oculto)
+        whatsappButton.style.opacity = '0';
+        whatsappButton.style.visibility = 'hidden';
+        whatsappButton.style.transition = 'opacity 0.3s ease-in-out, visibility 0.3s ease-in-out';
+    }
+
+    // --- Review Form Handling ---
+    const reviewForm = document.getElementById('review-form');
+    const reviewStatus = document.getElementById('review-status');
+    const dynamicReviewsContainer = document.getElementById('dynamic-reviews-container');
+    const noReviewsMessage = document.getElementById('no-reviews-message');
+    const reviewsKey = 'glampingReviews';
+
+    function loadReviews() {
+        const reviews = JSON.parse(localStorage.getItem(reviewsKey) || '[]');
+        if (dynamicReviewsContainer && noReviewsMessage) {
+            dynamicReviewsContainer.innerHTML = ''; // Limpia el contenedor
+            if (reviews.length === 0) {
+                noReviewsMessage.style.display = 'block';
+            } else {
+                noReviewsMessage.style.display = 'none';
+                reviews.forEach(review => {
+                    const reviewElement = createReviewElement(review);
+                    dynamicReviewsContainer.appendChild(reviewElement);
+                });
+            }
+        }
+    }
+
+    function createReviewElement(review) {
+        const col = document.createElement('div');
+        col.classList.add('col-lg-6', 'mb-4'); // Ajusta las clases según tu diseño
+
+        const card = document.createElement('div');
+        card.classList.add('card', 'review-card', 'shadow-sm', 'h-100');
+
+        const cardBody = document.createElement('div');
+        cardBody.classList.add('card-body');
+
+        const header = document.createElement('div');
+        header.classList.add('d-flex', 'align-items-center', 'mb-3');
+
+        const nameRatingDiv = document.createElement('div');
+        const nameEl = document.createElement('h6');
+        nameEl.classList.add('card-subtitle', 'mb-1');
+        nameEl.textContent = review.name;
+        const ratingEl = document.createElement('div');
+        ratingEl.classList.add('text-warning'); // Clase para estrellas
+        ratingEl.innerHTML = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+
+        nameRatingDiv.appendChild(nameEl);
+        nameRatingDiv.appendChild(ratingEl);
+        header.appendChild(nameRatingDiv);
+
+        const textEl = document.createElement('p');
+        textEl.classList.add('card-text', 'fst-italic');
+        textEl.textContent = `"${review.text}"`;
+
+        cardBody.appendChild(header);
+        cardBody.appendChild(textEl);
+        card.appendChild(cardBody);
+        col.appendChild(card);
+
+        return col;
+    }
+
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('review-name').value;
+            const text = document.getElementById('review-text').value;
+            const rating = parseInt(document.getElementById('review-rating').value);
+
+            if (name && text && rating) {
+                const newReview = { name, text, rating, date: new Date().toISOString() };
+                const reviews = JSON.parse(localStorage.getItem(reviewsKey) || '[]');
+                reviews.push(newReview);
+                localStorage.setItem(reviewsKey, JSON.stringify(reviews));
+
+                if (reviewStatus) reviewStatus.innerHTML = '<div class="alert alert-success">¡Gracias por tu reseña!</div>';
+                reviewForm.reset();
+                loadReviews(); // Recarga las reseñas para mostrar la nueva
+            } else {
+                if (reviewStatus) reviewStatus.innerHTML = '<div class="alert alert-danger">Por favor, completa todos los campos.</div>';
+            }
+        });
+    }
+
+    // Carga inicial de reseñas (si el contenedor existe)
+    if (dynamicReviewsContainer) {
+        loadReviews();
+    }
 
 });
 
-    // Smooth scroll for navigation links
-    document.querySelectorAll('nav a[href^="#"], footer a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if(targetElement) {
-                // Calculate offset for fixed navbar
-                const navbarHeight = document.querySelector('.navbar.fixed-top')?.offsetHeight || 56;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-    // Initialize animations or other JS functionalities here
-    console.log('Gamplin Rental Site Ready!');
-
-    // Example: Smooth scroll for navigation links (requires Bootstrap 5 JS)
-    // Add smooth scrolling to all links
-    // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    //     anchor.addEventListener('click', function (e) {
-    //         e.preventDefault();
-    //         document.querySelector(this.getAttribute('href')).scrollIntoView({
-    //             behavior: 'smooth'
-    //         });
-    //     });
-    // });
-
-    // --- Anime.js Animations ---
-
-    // Hero Section - Fade in elements
-    anime.timeline({ easing: 'easeOutExpo', duration: 1000 })
-        .add({
-            targets: '.hero-section .anime-target',
-            opacity: [0, 1],
-            translateY: [30, 0],
-            delay: anime.stagger(250, { start: 300 }) // Stagger animation for each element, start after 300ms
-        });
-
-    // About Section - Scroll Animation
-    const aboutSectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                anime({
-                    targets: '#about .anime-scroll-target',
-                    translateX: [-50, 0],
-                    opacity: [0, 1],
-                    duration: 1200,
-                    easing: 'easeOutCubic',
-                    delay: 100
-                });
-                aboutSectionObserver.unobserve(entry.target); // Animate only once
-            }
-        });
-    }, { threshold: 0.25 }); // Trigger when 25% visible
-
-    const aboutSectionTarget = document.querySelector('#about .anime-scroll-target');
-    if (aboutSectionTarget) {
-        aboutSectionObserver.observe(aboutSectionTarget);
-    }
-
-    // --- WhatsApp Button Functionality ---
-    const whatsappNumber = '573502328517'; // <-- IMPORTANTE: Reemplaza con el número real (ej: 573101234567)
-    const whatsappMessage = encodeURIComponent('Hola! Estoy interesado en el alquiler del gamplin en Támara.');
-    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-
-    const setupWhatsAppButton = (buttonId) => {
-        const btn = document.getElementById(buttonId);
-        if (btn) {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault(); // Previene comportamiento por defecto si es un enlace <a>
-                window.open(whatsappURL, '_blank');
-            });
-            // Si es un enlace <a>, también actualiza el href para accesibilidad y SEO
-            if (btn.tagName === 'A') {
-                btn.href = whatsappURL;
-                btn.target = '_blank'; // Asegura que abra en nueva pestaña
-                btn.rel = 'noopener noreferrer'; // Buenas prácticas de seguridad
-            }
-        }
-    };
-
-    setupWhatsAppButton('whatsapp-button'); // Botón en sección contacto
-    setupWhatsAppButton('whatsapp-float-button'); // Botón flotante
-    setupWhatsAppButton('footer-whatsapp-link'); // Enlace en footer
-
-    // --- Form Submission Handling (Formspree Recommendation) ---
-    // El formulario HTML ya está configurado con el atributo 'action' apuntando a Formspree.
-    // Formspree manejará el envío directamente.
-    // Asegúrate de reemplazar 'TU_ENDPOINT_FORMSPREE' en index.html con tu URL real de Formspree.
-    // Puedes añadir un listener para mostrar un mensaje de 'enviando' o 'éxito' si lo deseas,
-    // pero Formspree redirigirá a una página de agradecimiento por defecto.
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-         console.log('Formulario de contacto listo. Asegúrate de configurar el endpoint de Formspree en index.html.');
-         // Opcional: Añadir feedback visual al enviar
-         contactForm.addEventListener('submit', function() {
-            // Podrías deshabilitar el botón de envío aquí para prevenir doble click
-            const submitButton = contactForm.querySelector('button[type="submit"]');
-            if(submitButton) {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Enviando...';
-            }
-            // Formspree se encargará del resto gracias al atributo 'action'
-         });
-    }
-
-    // Inicializar Tooltips de Bootstrap (para el botón flotante)
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-
-    // Asegurar que el botón flotante tenga el tooltip configurado
-    const floatButton = document.getElementById('whatsapp-float-button');
-    if (floatButton && !floatButton.getAttribute('data-bs-original-title')) { // Verifica si el tooltip ya fue inicializado
-        floatButton.setAttribute('data-bs-toggle', 'tooltip');
-        floatButton.setAttribute('data-bs-placement', 'left');
-        floatButton.setAttribute('title', 'Contactar por WhatsApp');
-        new bootstrap.Tooltip(floatButton); // Inicializa el tooltip si no lo estaba
-    }
-
-;
+// Manejo del botón 'Escribir Reseña'
+document.getElementById('show-review-form').addEventListener('click', function() {
+    const form = document.getElementById('review-form');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+});

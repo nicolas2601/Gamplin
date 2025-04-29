@@ -11,9 +11,15 @@ body {
     background-position: center 30% !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
+    font-weight: 700;
+    color: #f59d1a; /* Verde natural para el título principal */
+
+}
+
+ h2, h3, h4, h5, h6 {
     font-weight: 600;
-    color: #5d4037; /* Marrón oscuro para títulos */
+    color: #7e4a3a; /* Marrón oscuro para títulos */
 }
 
 a {
